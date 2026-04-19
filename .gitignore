@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Curriculum content (proprietary — use curriculum-example.js as reference)
+src/data/curriculum.js
+src/data/curriculum.js.bak
+
+# Editor / OS
+.DS_Store
+.vscode/
+*.swp
+*.swo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

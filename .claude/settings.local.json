@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npx impeccable:*)",
+      "Bash(ls /Users/nsethi/Downloads/projects/groove/*.md)",
+      "Bash(sed -i '' 's/\"Chapter 0 · Lesson /\"Chapter 1 · Lesson /g' /Users/nsethi/Downloads/projects/groove/src/data/curriculum.js)",
+      "Bash(sed -i '' 's/\"Chapter 1 · Lesson \\\\\\([0-9]\\\\\\)\"/\"Chapter 2 · Lesson \\\\1\"/g' /Users/nsethi/Downloads/projects/groove/src/data/curriculum.js)",
+      "Bash(npm list:*)",
+      "Bash(python3)",
+      "Bash(python3 -c ':*)",
+      "Bash(python3 /tmp/fix_curriculum.py)",
+      "Bash(node -e ':*)",
+      "Bash(node --input-type=module)",
+      "Bash(python3 -m json.tool)",
+      "Bash(grep -E \"\\\\.\\(jsx|js|json\\)$\")",
+      "Bash(ls -la ~/Downloads/projects/groove/.env*)",
+      "Bash(node .agents/skills/impeccable/scripts/cleanup-deprecated.mjs)",
+      "Bash(echo \"EXIT_CODE:$?\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('mcpServers', {}\\), indent=2\\)\\)\")",
+      "Bash(code-review-graph status:*)",
+      "Bash(code-review-graph query:*)",
+      "Bash(code-review-graph build:*)",
+      "mcp__code-review-graph__get_architecture_overview_tool",
+      "mcp__code-review-graph__semantic_search_nodes_tool",
+      "mcp__code-review-graph__query_graph_tool"
+    ]
+  }
+}
