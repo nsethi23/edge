@@ -12,23 +12,12 @@ function getHandName(row, col) {
   return RANKS[col] + RANKS[row] + 'o'
 }
 
-// Parse a single hand token into an array of "row,col" cell keys.
-// Supports:
-//   Pairs:         AA, TT, 66
-//   Pair ranges:   AA-66 (explicit), 66+ (shorthand = 66 up to AA)
-//   Suited:        AKs, T9s
-//   Suited range:  AKs-ATs (explicit), A3s+ (shorthand = A3s up to AKs)
-//   Offsuit:       AKo, KJo
-//   Offsuit range: AKo-AJo (explicit), ATo+ (shorthand = ATo up to AKo)
+// Parses standard range notation (AA-66, AKs-ATs, 66+, A3s+, ATo+) into grid cell keys.
 function parseToken(token) {
   token = token.trim()
   if (!token) return []
   const cells = []
 
-  // ── '+' shorthand ─────────────────────────────────────────────────────────
-  // "66+" means all pairs from AA down to 66.
-  // "A3s+" means all suited aces from AKs down to A3s.
-  // "ATo+" means all offsuit aces from AKo down to ATo.
   if (token.endsWith('+')) {
     const base = token.slice(0, -1)
     const suited = base.endsWith('s')
@@ -36,12 +25,11 @@ function parseToken(token) {
     const isPair = base.length === 2 && !suited && !offsuit
 
     if (isPair) {
-      // e.g. "66+" → (0,0)=AA … (8,8)=66
       const r = rankIdx(base[0])
       for (let i = 0; i <= r; i++) cells.push(`${i},${i}`)
     } else if (base.length === 3 && (suited || offsuit)) {
-      const r1 = rankIdx(base[0]) // fixed (higher) rank
-      const r2 = rankIdx(base[1]) // base (lower) rank — expand from here up to r1+1
+      const r1 = rankIdx(base[0])
+      const r2 = rankIdx(base[1])
       for (let j = r1 + 1; j <= r2; j++) {
         if (suited) {
           cells.push(`${Math.min(r1, j)},${Math.max(r1, j)}`)
@@ -53,7 +41,6 @@ function parseToken(token) {
     return cells
   }
 
-  // ── Explicit range with '-' ────────────────────────────────────────────────
   if (token.includes('-')) {
     const dash = token.indexOf('-')
     const start = token.slice(0, dash)
@@ -86,9 +73,7 @@ function parseToken(token) {
     return cells
   }
 
-  // ── Single hand ───────────────────────────────────────────────────────────
   if (token.length === 2) {
-    // Pair: AA, KK, 22 …
     const r = rankIdx(token[0])
     if (r >= 0) cells.push(`${r},${r}`)
   } else if (token.length === 3) {
@@ -113,11 +98,8 @@ function parseRangeString(str) {
   return new Set(cells)
 }
 
-// ── Component ────────────────────────────────────────────────────────────────
-
 export default function RangeChart({ ranges = [], title }) {
-  // ranges: [{ hands: string, color: string, label?: string }]
-  // First range's color wins when cells overlap (use for additive positional layering).
+  // ranges: [{ hands: string, color: string, label?: string }] — first match wins per cell
   const cellColors = useMemo(() => {
     const map = {}
     for (const range of ranges) {
