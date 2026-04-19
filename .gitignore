@@ -14,11 +14,20 @@ build/
 src/data/curriculum.js
 src/data/curriculum.js.bak
 
-# Claude Code
+# AI / editor config
 CLAUDE.md
 AGENTS.md
 GEMINI.md
 .claude/
+.cursor/
+.cursorrules
+.impeccable.md
+.mcp.json
+.opencode.json
+.windsurfrules
+
+# Vite cache
+.vite/
 
 # Editor / OS
 .DS_Store
