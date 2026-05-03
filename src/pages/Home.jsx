@@ -88,6 +88,7 @@ export default function Home() {
             transition={{ delay: 0.15, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             style={{
               display: 'flex',
+              flexWrap: 'wrap',
               gap: 'var(--space-sm)',
               alignItems: 'center',
               paddingBottom: 'var(--space-3xl)',
@@ -113,6 +114,27 @@ export default function Home() {
               style={{ width: 'auto', padding: '13px 20px', flexShrink: 0 }}
             >
               Glossary
+            </button>
+            <button
+              onClick={() => navigate('/results')}
+              className="btn-secondary"
+              style={{ width: 'auto', padding: '13px 20px', flexShrink: 0 }}
+            >
+              Results
+            </button>
+            <button
+              onClick={() => navigate('/ranges')}
+              className="btn-secondary"
+              style={{ width: 'auto', padding: '13px 20px', flexShrink: 0 }}
+            >
+              Ranges
+            </button>
+            <button
+              onClick={() => navigate('/coach')}
+              className="btn-secondary"
+              style={{ width: 'auto', padding: '13px 20px', flexShrink: 0 }}
+            >
+              Coach
             </button>
           </motion.div>
         )}

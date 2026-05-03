@@ -16,6 +16,7 @@ A structured poker theory learning app for 6-max cash games. Covers preflop rang
 - Glossary with per-position range charts and inline term highlighting throughout lesson content
 - Master account bypass for instructors
 - Drills mode
+- Coach mode for hand-history review through a server-side Groq API route
 
 ## Getting Started
 
@@ -32,11 +33,18 @@ VITE_FIREBASE_PROJECT_ID=
 VITE_FIREBASE_STORAGE_BUCKET=
 VITE_FIREBASE_MESSAGING_SENDER_ID=
 VITE_FIREBASE_APP_ID=
+VITE_MASTER_EMAIL=
+
+# Server-only. Do not prefix with VITE_.
+GROQ_API_KEY=
+GROQ_MODEL=llama-3.3-70b-versatile
 ```
 
 ```bash
 npm run dev
 ```
+
+The coach UI calls `/api/coach`, which expects `GROQ_API_KEY` to be set on the server. Keep textbook/reference excerpts in `src/data/coachKnowledge.js` so the coach can use them in its system prompt.
 
 ## Curriculum
 
