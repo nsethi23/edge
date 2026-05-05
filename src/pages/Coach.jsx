@@ -9,6 +9,59 @@ const STARTER = {
   content: 'Fill in the hand details above and ask your question.',
 }
 
+const SAMPLE_HANDS = [
+  {
+    game: '2/5 NL',
+    stacks: '100',
+    heroPos: 'BTN',
+    heroHand: 'AhJh',
+    preflop: 'CO opens 2.5BB, Hero calls on the Button, blinds fold.',
+    board: 'Jd 8d 4c / Ks / 2h',
+    postflop: 'Flop: CO bets 3BB into 6.5BB, Hero calls. Turn: CO bets 11BB into 12.5BB, Hero calls. River: CO shoves 84BB into 34.5BB.',
+    question: 'Should I call river with top pair, or should I have folded earlier?',
+  },
+  {
+    game: '1/2 NL',
+    stacks: '120',
+    heroPos: 'CO',
+    heroHand: 'As5s',
+    preflop: 'HJ opens 3BB, Hero 3-bets to 9BB, Button and blinds fold, HJ calls.',
+    board: 'Kc 7s 2d / 4s / Qh',
+    postflop: 'Flop: HJ checks, Hero bets 6BB into 21BB, HJ calls. Turn: HJ checks, Hero bets 22BB with the nut flush draw and gutshot, HJ calls. River: HJ checks.',
+    question: 'Is this a good triple barrel bluff candidate, or should I give up river?',
+  },
+  {
+    game: '5/10 NL',
+    stacks: '100',
+    heroPos: 'BB',
+    heroHand: 'QhQs',
+    preflop: 'BTN opens 2.5BB, SB folds, Hero 3-bets to 11BB, BTN calls.',
+    board: 'Td 7c 3s / 9d / Ac',
+    postflop: 'Flop: Hero bets 8BB into 22.5BB, BTN calls. Turn: Hero checks, BTN bets 18BB, Hero calls. River: Hero checks, BTN bets 55BB.',
+    question: 'How should I think about this river decision after the ace arrives?',
+  },
+  {
+    game: '2/5 NL',
+    stacks: '85',
+    heroPos: 'SB',
+    heroHand: '9c9d',
+    preflop: 'UTG opens 2.5BB, folds to Hero in SB, Hero calls, BB folds.',
+    board: '8h 6h 2s / 5c / Jd',
+    postflop: 'Flop: Hero checks, UTG bets 3BB into 6BB, Hero calls. Turn: Hero checks, UTG bets 9BB into 12BB.',
+    question: 'Should I continue turn with an overpair plus straight draw, or is this too weak versus UTG?',
+  },
+  {
+    game: '1/3 NL',
+    stacks: '150',
+    heroPos: 'HJ',
+    heroHand: 'KdQd',
+    preflop: 'Hero opens 2.5BB, BTN calls, BB calls.',
+    board: 'Qc 9d 4d / 2s / 9h',
+    postflop: 'Flop: BB checks, Hero bets 4BB into 8BB, BTN calls, BB folds. Turn: Hero bets 13BB into 16BB, BTN calls. River: Hero checks, BTN bets 38BB.',
+    question: 'Did I overplay top pair, and what should my river plan be?',
+  },
+]
+
 const fieldStyle = {
   width: '100%',
   background: 'var(--bg-card)',
@@ -111,6 +164,21 @@ function buildHandContext({ game, stacks, heroPos, heroHand, preflop, board, pos
   return lines.join('\n')
 }
 
+async function readCoachResponse(response) {
+  const text = await response.text()
+  if (!text.trim()) return {}
+
+  try {
+    return JSON.parse(text)
+  } catch {
+    return {
+      error: response.ok
+        ? 'Coach endpoint returned a non-JSON response.'
+        : `Coach endpoint returned ${response.status} ${response.statusText || 'without JSON'}.`,
+    }
+  }
+}
+
 export default function Coach() {
   const [messages, setMessages] = useState([STARTER])
   const [game, setGame] = useState('')
@@ -127,6 +195,19 @@ export default function Coach() {
   const handContext = buildHandContext({ game, stacks, heroPos, heroHand, preflop, board, postflop })
   const canSubmit = !loading && (question.trim() || handContext.trim())
   const hasHandData = game || stacks || heroPos || heroHand || preflop || board || postflop
+
+  function fillRandomExample() {
+    const sample = SAMPLE_HANDS[Math.floor(Math.random() * SAMPLE_HANDS.length)]
+    setGame(sample.game)
+    setStacks(sample.stacks)
+    setHeroPos(sample.heroPos)
+    setHeroHand(sample.heroHand)
+    setPreflop(sample.preflop)
+    setBoard(sample.board)
+    setPostflop(sample.postflop)
+    setQuestion(sample.question)
+    setError('')
+  }
 
   function clearHand() {
     setGame('')
@@ -162,7 +243,7 @@ export default function Coach() {
         }),
       })
 
-      const data = await response.json()
+      const data = await readCoachResponse(response)
       if (!response.ok) throw new Error(data.error || 'Coach request failed.')
 
       setMessages(current => [
@@ -215,6 +296,20 @@ export default function Coach() {
           }}>
             Ask how you should play a spot or review a hand you already played.
           </p>
+
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={fillRandomExample}
+            style={{
+              width: 'auto',
+              justifySelf: 'start',
+              padding: '12px 18px',
+              marginBottom: 'var(--space-2xl)',
+            }}
+          >
+            Random Example
+          </button>
 
           <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 'var(--space-2xl)' }}>
 
