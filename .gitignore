@@ -10,8 +10,7 @@ build/
 .env.local
 .env.*.local
 
-# Curriculum content (proprietary — use curriculum-example.js as reference)
-src/data/curriculum.js
+# Local curriculum backup
 src/data/curriculum.js.bak
 
 # AI / editor config
