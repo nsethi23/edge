@@ -35,8 +35,9 @@ export default function LessonScreen({ lesson, onStartQuiz }) {
         fontStyle: 'italic',
         lineHeight: 1.6,
         marginBottom: '32px',
-        borderLeft: '2px solid var(--border)',
-        paddingLeft: '16px',
+        background: 'rgba(200, 168, 75, 0.04)',
+        borderRadius: 'var(--radius-sm)',
+        padding: '12px 16px',
       }}>
         {lesson.concept}
       </p>

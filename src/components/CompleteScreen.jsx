@@ -38,7 +38,7 @@ export default function CompleteScreen({ score, total, lessonTitle, onRetry, onN
         transition={{ delay: 0.1, type: 'spring', stiffness: 200, damping: 18 }}
         style={{ marginBottom: '28px', position: 'relative' }}
       >
-        <svg width="110" height="110" viewBox="0 0 110 110">
+        <svg width="110" height="110" viewBox="0 0 110 110" aria-hidden="true">
           {/* Track */}
           <circle
             cx="55" cy="55" r={radius}

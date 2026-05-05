@@ -19,38 +19,50 @@ export function GlossaryTerm({ term, children }) {
 
   if (!definition) return <span>{children || term}</span>
 
+  const tooltipId = `glossary-${term}`
+
   return (
     <span ref={ref} style={{ position: 'relative', display: 'inline' }}>
-      <span
+      <button
         onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        aria-controls={tooltipId}
         style={{
           color: 'var(--gold)',
-          borderBottom: '1px dashed var(--gold-dim)',
           cursor: 'pointer',
           transition: 'color 0.15s',
+          background: 'none',
+          border: 'none',
+          borderBottom: '1px dashed var(--gold-dim)',
+          padding: 0,
+          font: 'inherit',
+          display: 'inline',
         }}
-        onMouseEnter={e => e.target.style.color = 'var(--gold-light)'}
-        onMouseLeave={e => e.target.style.color = 'var(--gold)'}
+        onMouseEnter={e => e.currentTarget.style.color = 'var(--gold-light)'}
+        onMouseLeave={e => e.currentTarget.style.color = 'var(--gold)'}
       >
         {children || term}
-      </span>
+      </button>
 
       {open && (
-        <span style={{
-          position: 'absolute',
-          bottom: 'calc(100% + 8px)',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 100,
-          background: '#1a2a1a',
-          border: '1px solid var(--border)',
-          borderRadius: 'var(--radius-sm)',
-          padding: '10px 14px',
-          width: '240px',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
-          animation: 'fadeUp 0.15s ease',
-          display: 'block',
-        }}>
+        <span
+          id={tooltipId}
+          role="tooltip"
+          style={{
+            position: 'absolute',
+            bottom: 'calc(100% + 8px)',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 100,
+            background: 'var(--bg-tooltip)',
+            border: '1px solid var(--border)',
+            borderRadius: 'var(--radius-sm)',
+            padding: '10px 14px',
+            width: '240px',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
+            animation: 'fadeUp 0.15s ease',
+            display: 'block',
+          }}>
           <span style={{
             display: 'block',
             fontFamily: 'var(--font-mono)',
@@ -79,7 +91,7 @@ export function GlossaryTerm({ term, children }) {
             transform: 'translateX(-50%) rotate(45deg)',
             width: '8px',
             height: '8px',
-            background: '#1a2a1a',
+            background: 'var(--bg-tooltip)',
             borderRight: '1px solid var(--border)',
             borderBottom: '1px solid var(--border)',
           }} />

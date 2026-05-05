@@ -163,6 +163,8 @@ export default function Home() {
               {/* Chapter header */}
               <button
                 onClick={() => setExpanded(e => ({ ...e, [chapter.id]: !e[chapter.id] }))}
+                aria-expanded={expanded[chapter.id] ?? false}
+                aria-controls={`chapter-${chapter.id}-lessons`}
                 style={{
                   width: '100%',
                   display: 'flex',
@@ -212,6 +214,7 @@ export default function Home() {
               <AnimatePresence>
                 {expanded[chapter.id] && (
                   <motion.div
+                    id={`chapter-${chapter.id}-lessons`}
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}

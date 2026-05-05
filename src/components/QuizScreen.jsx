@@ -25,20 +25,13 @@ export default function QuizScreen({ questions, onComplete }) {
 
   function handleNext() {
     if (current + 1 >= questions.length) {
-      onComplete(score + (isCorrect ? 1 : 0) - (isCorrect ? 1 : 0), results)
-      // Use updated score
-      onComplete(
-        results.filter(r => r.correct).length + (isCorrect ? 0 : 0),
-        results
-      )
+      onComplete(results.filter(r => r.correct).length, results)
       return
     }
     setCurrent(c => c + 1)
     setSelected(null)
     setAnswered(false)
   }
-
-  const finalScore = results.filter(r => r.correct).length + (answered && isCorrect ? 0 : 0)
 
   return (
     <motion.div
@@ -109,10 +102,20 @@ export default function QuizScreen({ questions, onComplete }) {
                 border = 'var(--gold)'
               }
 
+              const answerLabel = !answered
+                ? opt
+                : i === q.correct
+                  ? `${opt} — Correct`
+                  : i === selected
+                    ? `${opt} — Incorrect`
+                    : opt
+
               return (
                 <button
                   key={i}
                   onClick={() => handleSelect(i)}
+                  aria-label={answerLabel}
+                  aria-pressed={answered && i === selected ? true : undefined}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -160,6 +163,8 @@ export default function QuizScreen({ questions, onComplete }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
+                role="status"
+                aria-live="polite"
                 style={{
                   padding: '14px 16px',
                   background: isCorrect ? 'var(--correct-bg)' : 'var(--wrong-bg)',

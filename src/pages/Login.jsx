@@ -131,8 +131,9 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <div>
-            <label style={labelStyle}>Email</label>
+            <label htmlFor="login-email" style={labelStyle}>Email</label>
             <input
+              id="login-email"
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
@@ -145,8 +146,9 @@ export default function Login() {
           </div>
 
           <div>
-            <label style={labelStyle}>Password</label>
+            <label htmlFor="login-password" style={labelStyle}>Password</label>
             <input
+              id="login-password"
               type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}

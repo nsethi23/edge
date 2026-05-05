@@ -80,7 +80,7 @@ function SelectButton({ active, disabled, onClick, children, style }) {
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
       style={{
-        minHeight: '38px',
+        minHeight: '44px',
         padding: '9px 10px',
         borderRadius: 'var(--radius-sm)',
         border: `1px solid ${active ? 'var(--gold)' : 'var(--border-subtle)'}`,
@@ -275,12 +275,7 @@ export default function RangeLookup() {
             Static GTO preflop ranges for raise first in, facing an open, and facing a 3-bet.
           </p>
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(260px, 340px) minmax(0, 1fr)',
-            gap: 'var(--space-xl)',
-            alignItems: 'start',
-          }}>
+          <div className="range-layout">
             <div style={{ display: 'grid', gap: 'var(--space-lg)' }}>
               <section>
                 <div className="mono" style={{ color: 'var(--muted)', fontSize: '0.58rem', marginBottom: 'var(--space-sm)' }}>

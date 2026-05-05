@@ -257,10 +257,12 @@ export default function Drills() {
                 <motion.div
                   style={{
                     height: '100%',
+                    width: '100%',
                     background: timeLeft <= 5 ? 'var(--wrong)' : 'var(--gold)',
                     borderRadius: '2px',
+                    transformOrigin: 'left',
                   }}
-                  animate={{ width: `${(timeLeft / DRILL_DURATION) * 100}%` }}
+                  animate={{ scaleX: timeLeft / DRILL_DURATION }}
                   transition={{ duration: 1, ease: 'linear' }}
                 />
               </div>
@@ -347,7 +349,7 @@ export default function Drills() {
                       style={{
                         padding: '14px var(--space-lg)',
                         background: 'var(--gold)',
-                        color: '#0b150b',
+                        color: 'var(--bg)',
                         fontFamily: 'var(--font-mono)',
                         fontSize: '0.75rem',
                         letterSpacing: '0.06em',

@@ -23,7 +23,7 @@ export default function NavBar({ chapter, lesson, phase, total, current }) {
           fontSize: '0.7rem',
           letterSpacing: '0.06em',
           textTransform: 'uppercase',
-          padding: '4px 0',
+          padding: '12px 0',
           flexShrink: 0,
           transition: 'color 0.15s',
         }}
@@ -79,6 +79,7 @@ export default function NavBar({ chapter, lesson, phase, total, current }) {
             letterSpacing: '0.06em',
             flexShrink: 0,
             transition: 'color 0.15s',
+            padding: '12px 0',
           }}
           onMouseEnter={e => e.target.style.color = 'var(--text)'}
           onMouseLeave={e => e.target.style.color = 'var(--muted)'}
