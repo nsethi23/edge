@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import NavBar from '../components/NavBar'
 import WinLossChart from '../components/WinLossChart'
@@ -42,6 +42,9 @@ export default function Results() {
   const [amount, setAmount] = useState('')
   const [date, setDate] = useState(todayInputValue)
   const [note, setNote] = useState('')
+  const [confirmClear, setConfirmClear] = useState(false)
+  const [undoEntry, setUndoEntry] = useState(null)
+  const undoTimerRef = useRef(null)
 
   useEffect(() => {
     window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(entries))
@@ -77,10 +80,23 @@ export default function Results() {
     setEntries([])
     setAmount('')
     setNote('')
+    setConfirmClear(false)
   }
 
   function removeEntry(id) {
-    setEntries(current => current.filter(entry => entry.id !== id))
+    const entry = entries.find(e => e.id === id)
+    setEntries(current => current.filter(e => e.id !== id))
+    clearTimeout(undoTimerRef.current)
+    setUndoEntry(entry)
+    undoTimerRef.current = setTimeout(() => setUndoEntry(null), 3500)
+  }
+
+  function undoRemove() {
+    clearTimeout(undoTimerRef.current)
+    if (undoEntry) {
+      setEntries(current => [...current, undoEntry])
+      setUndoEntry(null)
+    }
   }
 
   return (
@@ -324,11 +340,68 @@ export default function Results() {
             )}
           </div>
 
-          <button className="btn-secondary" onClick={clearEntries} disabled={entries.length === 0}>
-            Clear Sessions
-          </button>
+          {confirmClear ? (
+            <div style={{ display: 'flex', gap: 'var(--space-sm)' }}>
+              <button
+                className="btn-secondary"
+                onClick={clearEntries}
+                style={{ color: 'var(--wrong)', borderColor: 'var(--wrong-border)', flex: 1 }}
+              >
+                Yes, Clear All
+              </button>
+              <button
+                className="btn-secondary"
+                onClick={() => setConfirmClear(false)}
+                style={{ flex: 1 }}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <button
+              className="btn-secondary"
+              onClick={() => setConfirmClear(true)}
+              disabled={entries.length === 0}
+            >
+              Clear Sessions
+            </button>
+          )}
         </motion.div>
       </div>
+
+      {undoEntry && (
+        <div style={{
+          position: 'fixed',
+          bottom: 'calc(var(--bottom-nav-h) + 12px)',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border)',
+          borderRadius: 'var(--radius-sm)',
+          padding: '10px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 'var(--space-md)',
+          zIndex: 300,
+          whiteSpace: 'nowrap',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+          animation: 'fadeUp 0.15s ease',
+        }}>
+          <span style={{ fontSize: '0.82rem', color: 'var(--text)' }}>Session removed</span>
+          <button
+            onClick={undoRemove}
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.62rem',
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'var(--gold)',
+            }}
+          >
+            Undo
+          </button>
+        </div>
+      )}
     </div>
   )
 }

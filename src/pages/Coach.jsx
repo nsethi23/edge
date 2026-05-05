@@ -126,6 +126,17 @@ export default function Coach() {
 
   const handContext = buildHandContext({ game, stacks, heroPos, heroHand, preflop, board, postflop })
   const canSubmit = !loading && (question.trim() || handContext.trim())
+  const hasHandData = game || stacks || heroPos || heroHand || preflop || board || postflop
+
+  function clearHand() {
+    setGame('')
+    setStacks('')
+    setHeroPos('')
+    setHeroHand('')
+    setPreflop('')
+    setBoard('')
+    setPostflop('')
+  }
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -341,6 +352,16 @@ export default function Coach() {
             <button className="btn-primary" type="submit" disabled={!canSubmit}>
               {loading ? 'Thinking' : 'Ask Coach'}
             </button>
+            {hasHandData && (
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={clearHand}
+                style={{ marginTop: 'var(--space-sm)' }}
+              >
+                Clear Hand
+              </button>
+            )}
           </form>
 
           {error && (

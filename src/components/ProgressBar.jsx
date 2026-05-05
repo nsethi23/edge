@@ -11,10 +11,12 @@ export default function ProgressBar({ current, total }) {
     }}>
       <div style={{
         height: '100%',
-        width: `${pct}%`,
+        width: '100%',
         background: 'var(--gold)',
         borderRadius: '2px',
-        transition: 'width 0.3s ease',
+        transform: `scaleX(${pct / 100})`,
+        transformOrigin: 'left',
+        transition: 'transform 0.3s ease',
       }} />
     </div>
   )

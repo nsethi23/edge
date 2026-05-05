@@ -79,7 +79,8 @@ const FORMULAS = [
 export default function Drills() {
   const navigate = useNavigate()
   const [phase, setPhase] = useState('intro')
-  const [drills] = useState(() => Array.from({ length: 10 }, generateDrill))
+  const [drills, setDrills] = useState(() => Array.from({ length: 10 }, generateDrill))
+  const [drillResults, setDrillResults] = useState([])
   const [current, setCurrent] = useState(0)
   const [input, setInput] = useState('')
   const [answered, setAnswered] = useState(false)
@@ -87,12 +88,12 @@ export default function Drills() {
   const [score, setScore] = useState(0)
   const [timeLeft, setTimeLeft] = useState(DRILL_DURATION)
   const [timedOut, setTimedOut] = useState(false)
+  const [paused, setPaused] = useState(false)
   const inputRef = useRef(null)
   const timerRef = useRef(null)
 
   useEffect(() => {
-    if (phase !== 'drilling' || answered) return
-    setTimeLeft(DRILL_DURATION)
+    if (phase !== 'drilling' || answered || paused) return
     timerRef.current = setInterval(() => {
       setTimeLeft(t => {
         if (t <= 1) {
@@ -106,13 +107,28 @@ export default function Drills() {
       })
     }, 1000)
     return () => clearInterval(timerRef.current)
-  }, [phase, current, answered])
+  }, [phase, current, answered, paused])
 
   useEffect(() => {
     if (phase === 'drilling' && !answered) {
       inputRef.current?.focus()
     }
   }, [phase, current, answered])
+
+  function startDrilling() {
+    const newDrills = Array.from({ length: 10 }, generateDrill)
+    setDrills(newDrills)
+    setDrillResults([])
+    setCurrent(0)
+    setScore(0)
+    setInput('')
+    setAnswered(false)
+    setIsCorrect(false)
+    setTimedOut(false)
+    setPaused(false)
+    setTimeLeft(DRILL_DURATION)
+    setPhase('drilling')
+  }
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -127,15 +143,30 @@ export default function Drills() {
   }
 
   function handleNext() {
+    const drill = drills[current]
+    const val = parseInt(input, 10)
+    const result = {
+      question: drill.question,
+      type: drill.type,
+      answer: drill.answer,
+      userAnswer: timedOut ? null : val,
+      correct: isCorrect,
+      timedOut,
+      hint: drill.hint,
+    }
+    setDrillResults(r => [...r, result])
+
     if (current + 1 >= drills.length) {
-      setPhase('summary')
+      setPhase('review')
       return
     }
+    setTimeLeft(DRILL_DURATION)
     setCurrent(c => c + 1)
     setInput('')
     setAnswered(false)
     setIsCorrect(false)
     setTimedOut(false)
+    setPaused(false)
   }
 
   const drill = drills[current]
@@ -172,7 +203,6 @@ export default function Drills() {
               10 questions. 15 seconds each. The four formulas every player must know cold.
             </p>
 
-            {/* Formula reference — flat rows, no card wrappers */}
             <div style={{
               borderTop: '1px solid var(--border-subtle)',
               marginBottom: 'var(--space-3xl)',
@@ -209,7 +239,7 @@ export default function Drills() {
 
             <button
               className="btn-primary"
-              onClick={() => setPhase('drilling')}
+              onClick={startDrilling}
             >
               Start Drills →
             </button>
@@ -227,7 +257,7 @@ export default function Drills() {
               transition={{ duration: 0.18 }}
               style={{ paddingTop: 'var(--space-lg)', paddingBottom: 'var(--space-3xl)' }}
             >
-              {/* Progress + timer */}
+              {/* Progress + timer + pause */}
               <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -237,13 +267,30 @@ export default function Drills() {
                 <span className="mono" style={{ color: 'var(--muted)', fontSize: '0.65rem' }}>
                   {current + 1} / {drills.length}
                 </span>
-                <span className="mono" style={{
-                  color: timeLeft <= 5 ? 'var(--wrong)' : 'var(--gold)',
-                  fontSize: '0.75rem',
-                  transition: 'color 0.3s',
-                }}>
-                  {timeLeft}s
-                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-md)' }}>
+                  {!answered && (
+                    <button
+                      onClick={() => setPaused(p => !p)}
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.58rem',
+                        letterSpacing: '0.06em',
+                        textTransform: 'uppercase',
+                        color: paused ? 'var(--gold)' : 'var(--muted)',
+                        transition: 'color 0.15s',
+                      }}
+                    >
+                      {paused ? 'Resume' : 'Pause'}
+                    </button>
+                  )}
+                  <span className="mono" style={{
+                    color: paused ? 'var(--muted)' : timeLeft <= 5 ? 'var(--wrong)' : 'var(--gold)',
+                    fontSize: '0.75rem',
+                    transition: 'color 0.3s',
+                  }}>
+                    {timeLeft}s
+                  </span>
+                </div>
               </div>
 
               {/* Timer bar */}
@@ -258,12 +305,12 @@ export default function Drills() {
                   style={{
                     height: '100%',
                     width: '100%',
-                    background: timeLeft <= 5 ? 'var(--wrong)' : 'var(--gold)',
+                    background: paused ? 'var(--muted)' : timeLeft <= 5 ? 'var(--wrong)' : 'var(--gold)',
                     borderRadius: '2px',
                     transformOrigin: 'left',
                   }}
                   animate={{ scaleX: timeLeft / DRILL_DURATION }}
-                  transition={{ duration: 1, ease: 'linear' }}
+                  transition={{ duration: paused ? 0 : 1, ease: 'linear' }}
                 />
               </div>
 
@@ -310,7 +357,7 @@ export default function Drills() {
                       type="number"
                       value={input}
                       onChange={e => setInput(e.target.value)}
-                      disabled={answered}
+                      disabled={answered || paused}
                       placeholder="0"
                       style={{
                         width: '100%',
@@ -343,7 +390,7 @@ export default function Drills() {
                       %
                     </span>
                   </div>
-                  {!answered && (
+                  {!answered && !paused && (
                     <button
                       type="submit"
                       style={{
@@ -405,12 +452,115 @@ export default function Drills() {
                   transition={{ delay: 0.1 }}
                 >
                   <button className="btn-primary" onClick={handleNext}>
-                    {current + 1 >= drills.length ? 'See Results →' : 'Next →'}
+                    {current + 1 >= drills.length ? 'Review →' : 'Next →'}
                   </button>
                 </motion.div>
               )}
             </motion.div>
           </AnimatePresence>
+        )}
+
+        {/* ── Review ── */}
+        {phase === 'review' && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            style={{ paddingTop: 'var(--space-xl)', paddingBottom: 'var(--space-4xl)' }}
+          >
+            <div className="mono" style={{
+              color: 'var(--gold)',
+              fontSize: '0.62rem',
+              marginBottom: 'var(--space-md)',
+            }}>
+              Review
+            </div>
+            <h2 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '1.6rem',
+              color: 'var(--cream)',
+              lineHeight: 1.1,
+              marginBottom: 'var(--space-2xl)',
+            }}>
+              {score} / 10 correct
+            </h2>
+
+            <div style={{
+              borderTop: '1px solid var(--border-subtle)',
+              marginBottom: 'var(--space-2xl)',
+            }}>
+              {drillResults.map((result, i) => (
+                <div
+                  key={i}
+                  style={{
+                    padding: 'var(--space-md) 0',
+                    borderBottom: '1px solid var(--border-subtle)',
+                  }}
+                >
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                    gap: 'var(--space-md)',
+                    marginBottom: 'var(--space-xs)',
+                  }}>
+                    <div className="mono" style={{
+                      color: result.correct ? 'var(--correct)' : 'var(--wrong)',
+                      fontSize: '0.58rem',
+                      flexShrink: 0,
+                    }}>
+                      {i + 1}. {result.timedOut ? '⏱ Time' : result.correct ? '✓' : '✗'}
+                    </div>
+                    <div style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'center' }}>
+                      {!result.correct && result.userAnswer !== null && (
+                        <span style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '0.75rem',
+                          color: 'var(--wrong)',
+                          textDecoration: 'line-through',
+                          opacity: 0.7,
+                        }}>
+                          {result.userAnswer}%
+                        </span>
+                      )}
+                      <span style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.75rem',
+                        color: 'var(--cream)',
+                      }}>
+                        {result.answer}%
+                      </span>
+                    </div>
+                  </div>
+                  <p style={{
+                    fontSize: '0.82rem',
+                    color: 'var(--muted)',
+                    lineHeight: 1.5,
+                    marginBottom: '4px',
+                  }}>
+                    {result.question}
+                  </p>
+                  <p style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.62rem',
+                    color: 'var(--gold)',
+                    opacity: 0.7,
+                  }}>
+                    {result.hint}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+              <button className="btn-primary" onClick={() => setPhase('summary')}>
+                See Score →
+              </button>
+              <button className="btn-secondary" onClick={startDrilling}>
+                Drill Again
+              </button>
+            </div>
+          </motion.div>
         )}
 
         {/* ── Summary ── */}
@@ -452,18 +602,7 @@ export default function Drills() {
               <button className="btn-primary" onClick={() => navigate('/')}>
                 Back to Lessons →
               </button>
-              <button
-                className="btn-secondary"
-                onClick={() => {
-                  setCurrent(0)
-                  setScore(0)
-                  setInput('')
-                  setAnswered(false)
-                  setIsCorrect(false)
-                  setTimedOut(false)
-                  setPhase('drilling')
-                }}
-              >
+              <button className="btn-secondary" onClick={startDrilling}>
                 Drill Again
               </button>
             </div>

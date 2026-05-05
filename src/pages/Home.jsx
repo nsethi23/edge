@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CURRICULUM } from '../data/curriculum'
@@ -10,6 +10,18 @@ export default function Home() {
   const { logout, isMaster } = useAuth()
   const { completedLessons, isUnlocked, progressLoading } = useProgress()
   const [expanded, setExpanded] = useState({ ch0: true })
+  const [lockedToast, setLockedToast] = useState(false)
+  const lockedToastRef = useRef(null)
+
+  function handleLessonClick(lesson, unlocked) {
+    if (unlocked) {
+      navigate(`/lesson/${lesson.id}`)
+    } else {
+      clearTimeout(lockedToastRef.current)
+      setLockedToast(true)
+      lockedToastRef.current = setTimeout(() => setLockedToast(false), 2500)
+    }
+  }
 
   const firstLesson = CURRICULUM[0]?.lessons[0]
 
@@ -21,6 +33,7 @@ export default function Home() {
   const hasProgress = completedLessons.size > 0 && !isMaster
 
   return (
+    <>
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100dvh' }}>
       <div className="page">
 
@@ -86,55 +99,14 @@ export default function Home() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: 'var(--space-sm)',
-              alignItems: 'center',
-              paddingBottom: 'var(--space-3xl)',
-            }}
+            style={{ paddingBottom: 'var(--space-3xl)' }}
           >
             <button
               className="btn-primary"
               onClick={() => navigate(`/lesson/${ctaLessonId}`)}
-              style={{ width: 'auto', padding: '14px 28px', flexShrink: 0 }}
+              style={{ width: 'auto', padding: '14px 28px' }}
             >
               {hasProgress ? 'Continue →' : 'Start Learning →'}
-            </button>
-            <button
-              onClick={() => navigate('/drills')}
-              className="btn-secondary"
-              style={{ width: 'auto', padding: '13px 20px', flexShrink: 0 }}
-            >
-              Drills
-            </button>
-            <button
-              onClick={() => navigate('/glossary')}
-              className="btn-secondary"
-              style={{ width: 'auto', padding: '13px 20px', flexShrink: 0 }}
-            >
-              Glossary
-            </button>
-            <button
-              onClick={() => navigate('/results')}
-              className="btn-secondary"
-              style={{ width: 'auto', padding: '13px 20px', flexShrink: 0 }}
-            >
-              Results
-            </button>
-            <button
-              onClick={() => navigate('/ranges')}
-              className="btn-secondary"
-              style={{ width: 'auto', padding: '13px 20px', flexShrink: 0 }}
-            >
-              Ranges
-            </button>
-            <button
-              onClick={() => navigate('/coach')}
-              className="btn-secondary"
-              style={{ width: 'auto', padding: '13px 20px', flexShrink: 0 }}
-            >
-              Coach
             </button>
           </motion.div>
         )}
@@ -233,7 +205,7 @@ export default function Home() {
                       return (
                         <button
                           key={lesson.id}
-                          onClick={() => unlocked && navigate(`/lesson/${lesson.id}`)}
+                          onClick={() => handleLessonClick(lesson, unlocked)}
                           style={{
                             width: '100%',
                             display: 'flex',
@@ -309,5 +281,28 @@ export default function Home() {
 
       </div>
     </div>
+
+    {lockedToast && (
+
+      <div style={{
+        position: 'fixed',
+        bottom: 'calc(var(--bottom-nav-h) + 12px)',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        background: 'var(--bg-card)',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius-sm)',
+        padding: '10px 18px',
+        fontSize: '0.82rem',
+        color: 'var(--text)',
+        zIndex: 300,
+        whiteSpace: 'nowrap',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+        animation: 'fadeUp 0.15s ease',
+      }}>
+        Complete the previous lesson with a perfect score to unlock
+      </div>
+    )}
+    </>
   )
 }
