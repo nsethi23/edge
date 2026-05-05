@@ -48,7 +48,6 @@ export default function NavBar({ chapter, lesson, phase, total, current }) {
         {chapter}
       </div>
 
-      {/* Phase dots during a lesson; sign-out elsewhere (e.g. Drills) */}
       {phase && total > 0 ? (
         <div style={{
           display: 'flex',

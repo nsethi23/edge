@@ -41,7 +41,6 @@ export default function QuizScreen({ questions, onComplete }) {
       transition={{ duration: 0.3 }}
       style={{ paddingBottom: '40px' }}
     >
-      {/* Progress */}
       <div style={{ marginBottom: '20px' }}>
         <ProgressBar current={current} total={questions.length} />
         <div style={{
@@ -58,7 +57,6 @@ export default function QuizScreen({ questions, onComplete }) {
         </div>
       </div>
 
-      {/* Question card */}
       <AnimatePresence mode="wait">
         <motion.div
           key={current}
@@ -78,7 +76,6 @@ export default function QuizScreen({ questions, onComplete }) {
             </p>
           </div>
 
-          {/* Options */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
             {q.options.map((opt, i) => {
               let bg = 'var(--bg-card)'
@@ -155,7 +152,6 @@ export default function QuizScreen({ questions, onComplete }) {
             })}
           </div>
 
-          {/* Explanation */}
           <AnimatePresence>
             {answered && (
               <motion.div
@@ -195,7 +191,6 @@ export default function QuizScreen({ questions, onComplete }) {
             )}
           </AnimatePresence>
 
-          {/* Next button */}
           {answered && (
             <motion.button
               initial={{ opacity: 0 }}

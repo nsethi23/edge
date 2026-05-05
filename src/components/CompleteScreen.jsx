@@ -12,7 +12,6 @@ export default function CompleteScreen({ score, total, lessonTitle, onRetry, onN
   const pct = total > 0 ? score / total : 0
   const msg = MESSAGES.find(m => pct >= m.threshold) || MESSAGES[MESSAGES.length - 1]
 
-  // SVG ring animation
   const radius = 40
   const circumference = 2 * Math.PI * radius
   const offset = circumference * (1 - pct)
@@ -31,7 +30,6 @@ export default function CompleteScreen({ score, total, lessonTitle, onRetry, onN
         paddingTop: '16px',
       }}
     >
-      {/* Score ring */}
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -39,14 +37,12 @@ export default function CompleteScreen({ score, total, lessonTitle, onRetry, onN
         style={{ marginBottom: '28px', position: 'relative' }}
       >
         <svg width="110" height="110" viewBox="0 0 110 110" aria-hidden="true">
-          {/* Track */}
           <circle
             cx="55" cy="55" r={radius}
             fill="none"
             stroke="rgba(255,255,255,0.06)"
             strokeWidth="6"
           />
-          {/* Progress */}
           <motion.circle
             cx="55" cy="55" r={radius}
             fill="none"
@@ -88,7 +84,6 @@ export default function CompleteScreen({ score, total, lessonTitle, onRetry, onN
         </div>
       </motion.div>
 
-      {/* Message */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -125,7 +120,6 @@ export default function CompleteScreen({ score, total, lessonTitle, onRetry, onN
         )}
       </motion.div>
 
-      {/* Actions */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

@@ -11,12 +11,10 @@ export default function LessonScreen({ lesson, onStartQuiz }) {
       transition={{ duration: 0.3 }}
       style={{ paddingBottom: '40px' }}
     >
-      {/* Chapter label */}
       <div className="mono" style={{ color: 'var(--gold)', marginBottom: '10px', fontSize: '0.68rem' }}>
         {lesson.chapter}
       </div>
 
-      {/* Title */}
       <h1 style={{
         fontFamily: 'var(--font-display)',
         fontSize: 'clamp(1.6rem, 5vw, 2.2rem)',
@@ -27,7 +25,6 @@ export default function LessonScreen({ lesson, onStartQuiz }) {
         {lesson.title}
       </h1>
 
-      {/* Concept */}
       <p style={{
         fontFamily: 'var(--font-body)',
         fontSize: '1rem',
@@ -42,7 +39,6 @@ export default function LessonScreen({ lesson, onStartQuiz }) {
         {lesson.concept}
       </p>
 
-      {/* Content sections */}
       {(() => {
         const seenTerms = new Set()
         return lesson.content.map((section, i) => (
@@ -137,7 +133,6 @@ export default function LessonScreen({ lesson, onStartQuiz }) {
       ))
       })()}
 
-      {/* Start Quiz CTA */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

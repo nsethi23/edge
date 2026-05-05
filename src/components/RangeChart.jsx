@@ -12,7 +12,6 @@ function getHandName(row, col) {
   return RANKS[col] + RANKS[row] + 'o'
 }
 
-// Parses standard range notation (AA-66, AKs-ATs, 66+, A3s+, ATo+) into grid cell keys.
 function parseToken(token) {
   token = token.trim()
   if (!token) return []
@@ -99,7 +98,6 @@ function parseRangeString(str) {
 }
 
 export default function RangeChart({ ranges = [], title }) {
-  // ranges: [{ hands: string, color: string, label?: string }] — first match wins per cell
   const cellColors = useMemo(() => {
     const map = {}
     for (const range of ranges) {
@@ -126,7 +124,6 @@ export default function RangeChart({ ranges = [], title }) {
         </div>
       )}
 
-      {/* 13×13 grid */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(13, 1fr)',
@@ -172,7 +169,6 @@ export default function RangeChart({ ranges = [], title }) {
         )}
       </div>
 
-      {/* Legend */}
       {ranges.some(r => r.label) && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
           {ranges.filter(r => r.label).map((r, i) => (

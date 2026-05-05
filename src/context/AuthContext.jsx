@@ -12,7 +12,6 @@ const MASTER_EMAIL = import.meta.env.VITE_MASTER_EMAIL
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  // undefined = auth still initializing, null = logged out, object = logged in
   const [user, setUser] = useState(undefined)
 
   useEffect(() => {

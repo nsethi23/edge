@@ -1,5 +1,4 @@
 export const GLOSSARY = {
-  // Positions
   "LJ":   "Lojack — the first player to act preflop in 6-max. Also called UTG. Least positional advantage.",
   "HJ":   "Hijack — second to act preflop in 6-max. One seat left of the Lojack.",
   "CO":   "Cutoff — the player one seat right of the Button. Acts second-to-last postflop.",
@@ -11,11 +10,9 @@ export const GLOSSARY = {
   "LP":   "Late Position — CO and BN. Act last and have the most information.",
   "UTG":  "Under the Gun — the first player to act preflop. Same as LJ in 6-max.",
 
-  // Positional concepts
   "IP":   "In Position — acting after your opponent on a given street. A major advantage.",
   "OOP":  "Out of Position — acting before your opponent. Forces you to make decisions with less information.",
 
-  // Hand categories
   "PP":   "Pocket Pair — a starting hand where both hole cards have the same rank (e.g., AA, KK, 77).",
   "TPTK": "Top Pair Top Kicker — pairing the highest card on the board with the best possible kicker.",
   "OESD": "Open-Ended Straight Draw — 8 outs to make a straight. E.g., JT on Q92 — an 8 or K completes it.",
@@ -24,7 +21,6 @@ export const GLOSSARY = {
   "NFD":  "Nut Flush Draw — the best possible flush draw, using the ace of the relevant suit.",
   "GS":   "Gutshot — an inside straight draw with only 4 outs. Also called an inside straight draw.",
 
-  // Actions
   "RFI":  "Raise First In — opening the pot with a raise when no one has entered before you.",
   "PFR":  "Pre-Flop Raise — the percentage of hands a player raises preflop. A key stat.",
   "VPIP": "Voluntarily Put In Pot — % of hands a player enters voluntarily. Limp or raise, not the BB.",
@@ -35,39 +31,33 @@ export const GLOSSARY = {
   "Sqz":  "Squeeze — 3-betting after one player has raised and at least one other has called.",
   "CC":   "Cold Call — calling a raise when you have not previously put money in voluntarily.",
 
-  // Key metrics
   "EV":   "Expected Value — the average amount you expect to win or lose on a play over many repetitions. Always maximize EV.",
   "Eq":   "Equity — your share of the pot based on your current probability of winning. E.g., a flush draw has ~35% equity on the flop.",
   "MDF":  "Minimum Defense Frequency — how often you must call/raise a bet to prevent the villain from profitably bluffing 100% of the time.",
   "Alpha":"The break-even fold frequency for a bluff. Alpha = bet / (bet + pot). If villain folds more than Alpha, the bluff is profitable.",
 
-  // Hand concepts
   "Nuts": "The absolute best possible hand given the board. Having the nuts means you cannot be beaten.",
   "Air":  "A hand with no showdown value and no draw — pure bluff territory.",
   "SDV":  "Showdown Value — hands strong enough to win at showdown if checked down, but not strong enough to triple barrel.",
   "NutAdv": "Nut Advantage — having a higher proportion of the strongest possible hands than your opponent. Justifies more aggressive play.",
   "Blocker": "A card in your hand that reduces the combinations of a specific hand your opponent can have.",
 
-  // Street terms
   "Preflop": "The first betting round, before any community cards are dealt.",
   "Flop":  "The first three community cards dealt face-up. The second betting round.",
   "Turn":  "The fourth community card. The third betting round.",
   "River": "The fifth and final community card. The last betting round.",
 
-  // Math
   "Combos": "Combinations — the number of distinct ways a specific hand can be dealt from the deck. AK has 16 combos; a pocket pair has 6.",
   "PotOdds": "Pot Odds — the ratio of the pot size to the cost of a call. If pot odds exceed your equity, calling is profitable.",
   "Implied": "Implied Odds — the additional money you expect to win on future streets if you complete your draw.",
   "RevImplied": "Reverse Implied Odds — money you expect to LOSE on future streets when you improve to a second-best hand.",
 
-  // GTO concepts
   "GTO":  "Game Theory Optimal — a strategy that is unexploitable in the long run by any opponent.",
   "MES":  "Maximally Exploitative Strategy — adjusting maximally to exploit a specific opponent's tendencies, at the cost of being exploitable yourself.",
   "Range":"A range is the full set of hands a player could hold in a given situation. Thinking in ranges is the foundation of advanced poker.",
   "Polarized": "A polarized range contains very strong hands and bluffs, but few medium-strength hands.",
   "Merged": "A merged (or condensed) range contains mostly medium-strength hands with few bluffs or very strong holdings.",
 
-  // Game terms
   "Hero":   "The player from whose perspective a hand is analyzed.",
   "Villain":"Any opponent in the hand.",
   "Rake":   "The fee taken by the cardroom — usually 2.5–10% of the pot, capped at a set amount.",

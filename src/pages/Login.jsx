@@ -55,7 +55,6 @@ export default function Login() {
   const { user, login, signup } = useAuth()
   const navigate = useNavigate()
 
-  // Redirect if already logged in
   useEffect(() => {
     if (user) navigate('/', { replace: true })
   }, [user])
@@ -98,7 +97,6 @@ export default function Login() {
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
         style={{ width: '100%', maxWidth: '380px' }}
       >
-        {/* Brand */}
         <div className="mono" style={{
           color: 'var(--gold)',
           fontSize: '0.65rem',

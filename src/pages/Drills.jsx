@@ -176,7 +176,6 @@ export default function Drills() {
       <div className="page">
         <NavBar chapter="Drills · Math Training" />
 
-        {/* ── Intro ── */}
         {phase === 'intro' && (
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -246,7 +245,6 @@ export default function Drills() {
           </motion.div>
         )}
 
-        {/* ── Drilling ── */}
         {phase === 'drilling' && (
           <AnimatePresence mode="wait">
             <motion.div
@@ -257,7 +255,6 @@ export default function Drills() {
               transition={{ duration: 0.18 }}
               style={{ paddingTop: 'var(--space-lg)', paddingBottom: 'var(--space-3xl)' }}
             >
-              {/* Progress + timer + pause */}
               <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -293,7 +290,6 @@ export default function Drills() {
                 </div>
               </div>
 
-              {/* Timer bar */}
               <div style={{
                 height: '2px',
                 background: 'rgba(255,255,255,0.06)',
@@ -314,7 +310,6 @@ export default function Drills() {
                 />
               </div>
 
-              {/* Question */}
               <div style={{
                 padding: 'var(--space-xl)',
                 background: 'var(--bg-card)',
@@ -339,7 +334,6 @@ export default function Drills() {
                 </p>
               </div>
 
-              {/* Input */}
               <form onSubmit={handleSubmit} style={{ marginBottom: 'var(--space-md)' }}>
                 <div style={{
                   display: 'flex',
@@ -415,7 +409,6 @@ export default function Drills() {
                 </div>
               </form>
 
-              {/* Feedback */}
               <AnimatePresence>
                 {answered && (
                   <motion.div
@@ -460,7 +453,6 @@ export default function Drills() {
           </AnimatePresence>
         )}
 
-        {/* ── Review ── */}
         {phase === 'review' && (
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -563,7 +555,6 @@ export default function Drills() {
           </motion.div>
         )}
 
-        {/* ── Summary ── */}
         {phase === 'summary' && (
           <motion.div
             initial={{ opacity: 0, y: 16 }}

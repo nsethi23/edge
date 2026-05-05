@@ -313,7 +313,6 @@ export default function Coach() {
 
           <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 'var(--space-2xl)' }}>
 
-            {/* ── Setup ── */}
             <div>
               <SectionLabel>Setup</SectionLabel>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-sm)' }}>
@@ -344,7 +343,6 @@ export default function Coach() {
               </div>
             </div>
 
-            {/* ── Hero ── */}
             <div>
               <SectionLabel>Hero</SectionLabel>
               <div style={{ display: 'grid', gap: 'var(--space-sm)' }}>
@@ -380,7 +378,6 @@ export default function Coach() {
               </div>
             </div>
 
-            {/* ── Action ── */}
             <div>
               <SectionLabel>Action</SectionLabel>
               <div style={{ display: 'grid', gap: 'var(--space-sm)' }}>
@@ -427,7 +424,6 @@ export default function Coach() {
               </div>
             </div>
 
-            {/* ── Question ── */}
             <div>
               <SectionLabel>Question</SectionLabel>
               <label style={{ display: 'grid', gap: 'var(--space-xs)' }}>

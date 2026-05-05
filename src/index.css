@@ -1,4 +1,3 @@
-/* ── Google Fonts are loaded via index.html ── */
 
 :root {
   --bg:           #0b150b;
@@ -68,19 +67,16 @@ body {
   flex-direction: column;
 }
 
-/* ── Typography ── */
 h1, h2, h3 {
   font-family: var(--font-display);
   color: var(--cream);
   line-height: 1.2;
 }
 
-/* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-/* ── Buttons ── */
 button {
   font-family: var(--font-body);
   cursor: pointer;
@@ -88,10 +84,8 @@ button {
   background: none;
 }
 
-/* ── Links ── */
 a { color: inherit; text-decoration: none; }
 
-/* ── Utility ── */
 .mono {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -109,7 +103,6 @@ a { color: inherit; text-decoration: none; }
   flex-direction: column;
 }
 
-/* ── Cards ── */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -117,7 +110,6 @@ a { color: inherit; text-decoration: none; }
   padding: 20px;
 }
 
-/* ── Keyframes ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -138,7 +130,6 @@ a { color: inherit; text-decoration: none; }
   to   { stroke-dashoffset: var(--dash-offset); }
 }
 
-/* ── CTA Button ── */
 .btn-primary {
   display: block;
   width: 100%;
@@ -177,7 +168,6 @@ a { color: inherit; text-decoration: none; }
 
 .btn-secondary:hover { color: var(--text); border-color: var(--border); }
 
-/* ── Range Lookup responsive layout ── */
 .range-layout {
   display: grid;
   grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
@@ -191,7 +181,6 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
-/* ── Divider ── */
 .divider {
   height: 1px;
   background: var(--border-subtle);

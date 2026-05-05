@@ -4,7 +4,6 @@ import { db } from '../firebase'
 import { useAuth } from './AuthContext'
 import { CURRICULUM } from '../data/curriculum'
 
-// Flat ordered list of every lesson ID across all chapters
 const ALL_LESSON_IDS = CURRICULUM.flatMap(ch => ch.lessons.map(l => l.id))
 
 const ProgressContext = createContext(null)
@@ -49,10 +48,6 @@ export function ProgressProvider({ children }) {
     )
   }
 
-  // A lesson is unlocked if:
-  //   - user is master (all unlocked), OR
-  //   - it's the first lesson (index 0), OR
-  //   - the immediately preceding lesson has been completed
   function isUnlocked(lessonId) {
     if (isMaster) return true
     const idx = ALL_LESSON_IDS.indexOf(lessonId)

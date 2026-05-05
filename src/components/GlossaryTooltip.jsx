@@ -83,7 +83,6 @@ export function GlossaryTerm({ term, children }) {
           }}>
             {definition}
           </span>
-          {/* Arrow */}
           <span style={{
             position: 'absolute',
             bottom: '-5px',
@@ -113,21 +112,12 @@ function renderKatex(latex, displayMode) {
   }
 }
 
-// Parses body text, handling:
-//   $$...$$ — display (block) math
-//   $...$   — inline math  (avoid conflict: dollar amounts like $100 won't match
-//             because they are followed by digits, not a closing $)
-//   {{TERM}} — glossary tooltips
-//   **bold** — bold text
-//   \n       — line breaks
 export function parseGlossaryText(text, seenTerms = new Set()) {
   if (!text) return null
 
-  // Step 1: split on $$...$$ (display math)
   const segments = text.split(/(\\$\\$[\s\S]*?\\$\\$|\$\$[\s\S]*?\$\$)/g)
 
   return segments.flatMap((seg, si) => {
-    // Display math block
     const displayMatch = seg.match(/^\$\$([\s\S]*?)\$\$$/)
     if (displayMatch) {
       const html = renderKatex(displayMatch[1].trim(), true)
@@ -141,9 +131,6 @@ export function parseGlossaryText(text, seenTerms = new Set()) {
       ]
     }
 
-    // Step 2: within plain text, split on $...$ inline math
-    // Only match $...$ where the content has no spaces at edges and no $ inside
-    // This prevents matching "$100" (digit follows $) — pattern requires non-digit after $
     const inlineParts = seg.split(/(\$(?!\d)[^$\n]+?\$)/g)
 
     return inlineParts.flatMap((part, pi) => {
@@ -158,7 +145,6 @@ export function parseGlossaryText(text, seenTerms = new Set()) {
         ]
       }
 
-      // Step 3: glossary terms {{TERM}}
       const glossaryParts = part.split(/(\{\{[^}]+\}\})/g)
       return glossaryParts.flatMap((gp, gi) => {
         const glossaryMatch = gp.match(/^\{\{([^}]+)\}\}$/)
@@ -175,7 +161,6 @@ export function parseGlossaryText(text, seenTerms = new Set()) {
           ]
         }
 
-        // Step 4: **bold**
         const boldParts = gp.split(/(\*\*[^*]+\*\*)/g)
         return boldParts.flatMap((bp, bi) => {
           const boldMatch = bp.match(/^\*\*([^*]+)\*\*$/)
@@ -190,7 +175,6 @@ export function parseGlossaryText(text, seenTerms = new Set()) {
             ]
           }
 
-          // Step 5: line breaks
           return bp.split('\n').map((line, li, arr) => (
             <span key={`t-${si}-${pi}-${gi}-${bi}-${li}`}>
               {line}

@@ -1,11 +1,7 @@
-// GTO preflop ranges for 6-max No Limit Hold'em at 100BB
-// Frequencies represent how often to take the action (1 = always, 0.5 = 50%)
-// Data based on standard GTO solver outputs (PioSOLVER / GTO+ approximations)
 
 export type Position = 'UTG' | 'HJ' | 'CO' | 'BTN' | 'SB' | 'BB';
 export type Situation = 'RFI' | 'FOR' | 'F3B';
 
-// combo → frequency (0–1)
 type RangeMap = Record<string, number>;
 
 function r(pure: string[], mixed: Record<string, number> = {}): RangeMap {
@@ -15,7 +11,6 @@ function r(pure: string[], mixed: Record<string, number> = {}): RangeMap {
   return out;
 }
 
-// ─── RFI (Raise First In) ────────────────────────────────────────────────────
 
 export const RFI: Record<Position, RangeMap> = {
   UTG: r(
@@ -95,11 +90,9 @@ SB: r(
       'J4s':0.5, 'J3s':0.5, 'T5s':0.5, '85s':0.5, '74s':0.5, '64s':0.5, '53s':0.5 
     }
   ),
-  BB: {} // BB cannot RFI
+  BB: {}
 };
 
-// ─── 3BET ranges (hero 3bets villain's open) ─────────────────────────────────
-// Structure: THREBET[heroPos][villainPos]
 
 export const THREEBET: Partial<Record<Position, Partial<Record<Position, RangeMap>>>> = {
   HJ: {
@@ -181,8 +174,6 @@ export const THREEBET: Partial<Record<Position, Partial<Record<Position, RangeMa
   },
 };
 
-// ─── CALL (flat call vs open) ─────────────────────────────────────────────────
-// Hands that call rather than 3-bet or fold
 
 export const CALL_VS_OPEN: Partial<Record<Position, Partial<Record<Position, RangeMap>>>> = {
   HJ: {
@@ -355,8 +346,6 @@ export const CALL_VS_OPEN: Partial<Record<Position, Partial<Record<Position, Ran
   },
 };
 
-// ─── 4BET ranges (hero 4bets villain's 3bet) ──────────────────────────────────
-// Structure: FOURBET[heroPos][villainPos] = combos hero 4bets
 
 export const FOURBET: Partial<Record<Position, Partial<Record<Position, RangeMap>>>> = {
   UTG: {
@@ -386,7 +375,6 @@ export const FOURBET: Partial<Record<Position, Partial<Record<Position, RangeMap
   },
 };
 
-// ─── CALL 3BET ranges (hero calls villain's 3bet) ────────────────────────────
 
 export const CALL3BET: Partial<Record<Position, Partial<Record<Position, RangeMap>>>> = {
   UTG: {
@@ -416,7 +404,6 @@ export const CALL3BET: Partial<Record<Position, Partial<Record<Position, RangeMa
   },
 };
 
-// ─── Lookup API ──────────────────────────────────────────────────────────────
 
 export type ActionResult = {
   action: string;
@@ -468,7 +455,6 @@ export function getF3BResult(heroPos: Position, villainPos: Position, combo: str
   return results;
 }
 
-// Matrix cell color for the 13x13 grid
 export type CellColor = 'raise' | 'call' | 'mixed-raise' | 'mixed-call' | 'fold';
 
 export function getMatrixCellColor(
@@ -506,7 +492,6 @@ export function getMatrixCellColor(
   return 'fold';
 }
 
-// Valid position matchups
 export const VALID_FOR_MATCHUPS: Partial<Record<Position, Position[]>> = {
   HJ:  ['UTG'],
   CO:  ['UTG', 'HJ'],
@@ -532,7 +517,6 @@ export function getCombo(row: number, col: number): string {
   return `${r2}${r1}o`;
 }
 
-// One-liner explanations for common hands
 const EXPLANATIONS: Record<string, string> = {
   'AA': 'The nuts — always the strongest hand preflop.',
   'KK': 'Second nuts — 4-bet/call shoves against everything.',

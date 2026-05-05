@@ -38,7 +38,6 @@ export default function Lesson() {
   const [phase, setPhase] = useState('lesson')
   const [quizResults, setQuizResults] = useState([])
 
-  // Reset to lesson view when navigating between lessons
   useEffect(() => {
     setPhase('lesson')
     setQuizResults([])
@@ -46,10 +45,8 @@ export default function Lesson() {
 
   const found = findLesson(lessonId)
 
-  // Wait for progress to load before enforcing lock
   if (progressLoading) return null
 
-  // Render-time lock check — avoids race condition with useEffect + navigate
   if (found && !isUnlocked(lessonId)) {
     return <Navigate to="/" replace />
   }
@@ -75,7 +72,6 @@ export default function Lesson() {
   async function handleQuizComplete(score, results) {
     setQuizResults(results)
     setPhase('complete')
-    // Only unlock the next lesson on a perfect score
     if (score === lesson.quiz.length) {
       await completeLesson(lessonId)
     }

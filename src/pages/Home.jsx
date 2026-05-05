@@ -25,7 +25,6 @@ export default function Home() {
 
   const firstLesson = CURRICULUM[0]?.lessons[0]
 
-  // CTA navigates to the first uncompleted lesson, or first lesson for master/new users
   const allIds = CURRICULUM.flatMap(ch => ch.lessons.map(l => l.id))
   const ctaLessonId = isMaster
     ? firstLesson?.id
@@ -37,7 +36,6 @@ export default function Home() {
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100dvh' }}>
       <div className="page">
 
-        {/* ── Hero zone ── */}
         <motion.div
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -47,7 +45,6 @@ export default function Home() {
             paddingBottom: 'var(--space-3xl)',
           }}
         >
-          {/* Top row: brand + sign out */}
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -93,7 +90,6 @@ export default function Home() {
           </p>
         </motion.div>
 
-        {/* ── CTA zone ── */}
         {ctaLessonId && (
           <motion.div
             initial={{ opacity: 0, y: 8 }}
@@ -111,7 +107,6 @@ export default function Home() {
           </motion.div>
         )}
 
-        {/* ── Curriculum zone ── */}
         <div style={{ flex: 1, paddingBottom: 'var(--space-4xl)' }}>
 
           <div className="mono" style={{
@@ -132,7 +127,6 @@ export default function Home() {
               transition={{ delay: 0.22 + ci * 0.08, ease: [0.16, 1, 0.3, 1] }}
               style={{ marginBottom: 'var(--space-sm)' }}
             >
-              {/* Chapter header */}
               <button
                 onClick={() => setExpanded(e => ({ ...e, [chapter.id]: !e[chapter.id] }))}
                 aria-expanded={expanded[chapter.id] ?? false}
@@ -182,7 +176,6 @@ export default function Home() {
                 </div>
               </button>
 
-              {/* Lessons */}
               <AnimatePresence>
                 {expanded[chapter.id] && (
                   <motion.div
@@ -224,7 +217,6 @@ export default function Home() {
                           }}
                           onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                         >
-                          {/* Lesson number */}
                           <div className="mono" style={{
                             color: 'var(--muted)',
                             fontSize: '0.6rem',
@@ -259,7 +251,6 @@ export default function Home() {
                             </div>
                           </div>
 
-                          {/* Status indicator */}
                           <div style={{
                             color: completed ? 'var(--gold)' : 'var(--muted)',
                             fontSize: completed ? '0.7rem' : '0.75rem',

@@ -2,7 +2,6 @@ import { motion } from 'framer-motion'
 import NavBar from '../components/NavBar'
 import { GLOSSARY } from '../data/glossary'
 
-// ── Terminology categories ───────────────────────────────────────────────────
 
 const CATEGORIES = [
   { label: 'Positions',         keys: ['LJ','HJ','CO','BN','SB','BB','EP','MP','LP','UTG'] },
@@ -15,7 +14,6 @@ const CATEGORIES = [
   { label: 'Streets & Game',    keys: ['Preflop','Flop','Turn','River','Hero','Villain','Rake','bb','SPR'] },
 ]
 
-// ── Component ────────────────────────────────────────────────────────────────
 
 export default function Glossary() {
   return (
@@ -23,7 +21,6 @@ export default function Glossary() {
       <div className="page">
         <NavBar chapter="Glossary · Reference" />
 
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -50,7 +47,6 @@ export default function Glossary() {
           </p>
         </motion.div>
 
-        {/* ── Terminology ── */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -70,7 +66,6 @@ export default function Glossary() {
           {CATEGORIES.map((cat) => (
             <div key={cat.label} style={{ marginBottom: 'var(--space-2xl)' }}>
 
-              {/* Category label */}
               <div className="mono" style={{
                 color: 'var(--gold)',
                 fontSize: '0.58rem',
@@ -81,7 +76,6 @@ export default function Glossary() {
                 {cat.label}
               </div>
 
-              {/* Term rows */}
               <div style={{ borderTop: '1px solid var(--border-subtle)' }}>
                 {cat.keys.filter(k => GLOSSARY[k]).map((key) => (
                   <div
